@@ -1,1 +1,1 @@
-# tkinter-chatApp
+# tkinter chatApp using socket programming
