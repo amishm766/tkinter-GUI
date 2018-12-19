@@ -1,6 +1,6 @@
-# Author : Ankit Mishra
 import sys
 import socket
+import logging
 import traceback
 import pandas as pd
 from threading import Thread
@@ -8,7 +8,6 @@ from threading import Thread
 class Server():
     """ This class initializes the server class
     """
-
     def __init__(self, server_ip = '', server_port = 8081):
         """ This method initializes class Server
         """
@@ -87,26 +86,41 @@ class Server():
                 print('Invalid name')
                 conn.close()
                 continue
-            
-try:
-    global s
-    s = None
-    s = Server()
-    s.connect()
-    
-except Exception as exception:
-    print('Exception Occured :', sys.exc_info(), end = '\n')
-    traceback.print_exc()
                 
-except KeyboardInterrupt:
-    pass
+def log_file():
+    logger = logging.getLogger('Server_logger')
+    fh = logging.FileHandler('/home/pi/Documents/projects/gui/chatApp/Server.log')
+    fh.setLevel(logging.DEBUG)
+    ff = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh.setFormatter(ff)
+    logger.addHandler(fh)
+    logger.error('The program is starting...')
+    
 
-finally:
-    if s is not None:
+if __name__ == '__main__':           
+    try:
+        global s
+        s = None
+        log_file()
+        s = Server()
+        s.connect()
+
+    except Exception as exception:
+        print('Exception Occured :', sys.exc_info(), end = '\n')
+        traceback.print_exc()
         
-        #[print(s.connection_data.ix[client, 'clients_connection'])  for client in list(s.connection_data.clients_name)] 
-        s.server_socket.close()
-        print('Server closed')
-    else:
-        print('Server not created, shutting down ...')
-        
+    except FileNotFoundError as er:
+        print("The file you wanted to open doesn't exist")
+        logger.exception(er)
+
+    except KeyboardInterrupt:
+        pass
+
+    finally:
+        if s is not None:
+            #[print(s.connection_data.ix[client, 'clients_connection'])  for client in list(s.connection_data.clients_name)] 
+            s.server_socket.close()
+            print('Server closed')
+        else:
+            print('Server not created, shutting down ...')
+
