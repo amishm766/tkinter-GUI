@@ -51,14 +51,14 @@ class Client():
                     #app.login_top.destroy()
                     #self.client_socket.close()
                     break
-                
+                    
+        except KeyboardInterrupt:
+            pass
+        
         except Exception as exception:
             print('Exception Occured in receive_data :', sys.exc_info(), end = '\n')
             traceback.print_exc()
             #continue
-
-        except KeyboardInterrupt:
-            pass
         
     def send_data(self, event = None):
         """ This method sends the message to the server
