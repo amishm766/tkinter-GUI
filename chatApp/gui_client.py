@@ -106,12 +106,12 @@ class App(Client):
             self.password_entry.bind("<Return>", s.send_data)
             send_button.grid(row = 2, column = 1)
             
+        except KeyboardInterrupt:
+            pass
+            
         except Exception as exception:
             print('Exception Occured in login:', sys.exc_info(), end = '\n')
             traceback.print_exc()
-                        
-        except KeyboardInterrupt:
-            pass
             
     def chatApp(self, client_name = "", client_password = ""):
         try:
@@ -129,14 +129,13 @@ class App(Client):
             else:
                 self.signUpGUI()
                 
+        except KeyboardInterrupt:
+            pass
+                
         except Exception as exception:
             print('Exception Occured in chatApp:', sys.exc_info(), end = '\n')
             traceback.print_exc()
             
-        
-        except KeyboardInterrupt:
-            pass
-        
     def chatAppGUI(self):
         self.login_top.destroy()
                 
